@@ -1,0 +1,69 @@
+<!-- Latest Sidebar (Right) -->
+<div class="bg-tg-card px-0  sticky top-20">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-800">
+    <h2 class="text-2xl font-display font-bold uppercase text-white tracking-wide">
+      Latest
+    </h2>
+    <button class="text-tg-primary hover:text-white transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Latest Articles List -->
+  <div class="relative pl-6 border-l border-gray-200 ml-2">
+    {{ $latestSidebar := where .Site.RegularPages "Type" "posts" | first 5 }}
+    {{ range $latestSidebar }}
+    <article class="relative group pb-6 pt-2 pl-2 border-b border-gray-800/50 last:border-0">
+      <!-- Bullet Point on Timeline -->
+      <div
+        class="absolute -left-[37px] top-3 w-6 h-6 bg-gray-200 rounded-full border-[5px] border-[#1a1a1a] group-hover:bg-tg-primary group-hover:scale-110 transition-all duration-300 z-10 shadow-[0_0_10px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_15px_rgba(37,99,235,0.6)]">
+      </div>
+
+      <!-- Content -->
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex flex-col flex-1">
+          <!-- Time -->
+          <div class="flex items-center space-x-2 mb-1">
+            <span class="text-[10px] uppercase tracking-widest text-gray-500 font-bold group-hover:text-tg-primary transition-colors">
+              {{ $hours := div (sub now.Unix .Date.Unix) 3600 }}
+              {{ if lt $hours 24 }}
+                {{ $hours }} HOURS AGO
+              {{ else }}
+                {{ .Date.Format "Jan 02" }}
+              {{ end }}
+            </span>
+          </div>
+          <!-- Title -->
+          <h3
+            class="text-lg font-display font-medium tracking-wide leading-snug text-white group-hover:text-tg-primary transition-colors line-clamp-3"
+          >
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          </h3>
+        </div>
+        
+        <!-- Thumbnail -->
+        <div class="relative flex-shrink-0 w-40 h-28 overflow-hidden rounded-lg border border-white/10 group-hover:border-tg-primary/50 transition-colors">
+          <img src="{{ .Params.image }}" alt="{{ .Title }}"
+            class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+        </div>
+      </div>
+    </article>
+    {{ end }}
+  </div>
+
+  <!-- More Button -->
+  <div class=" mt-2  ">
+    <a href="/latest"
+      class="flex items-center justify-end space-x-2 text-tg-primary hover:text-white font-bold uppercase text-sm tracking-wider transition-colors group">
+      <span>More</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </a>
+  </div>
+</div>

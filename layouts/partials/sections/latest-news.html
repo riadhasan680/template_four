@@ -1,0 +1,104 @@
+<!-- Latest News Section -->
+<section class="w-full bg-[#2d2d2d] py-12 mb-12 -mx-4 md:-mx-0 px-4 md:px-8 shadow-2xl">
+    <div class="container mx-auto">
+        <!-- Header -->
+        <div class="flex items-center space-x-4 mb-8">
+            <h2 class="text-3xl font-display font-black text-white uppercase border-l-8 border-tg-primary pl-6 tracking-tight">
+                LATEST UPDATES
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 relative">
+            <!-- Left Column: Article List -->
+            <div class="lg:col-span-2 flex flex-col">
+                <div class="space-y-8">
+                    {{ $latest := where .Site.RegularPages "Type" "in" (slice "posts" "reviews" "videos" "popular" "exclusives") | first 10 }}
+                    {{ range $latest }}
+                    <article class="flex flex-col sm:flex-row gap-6 group border-b border-gray-700 pb-8 last:border-0 hover:bg-white/5  transition-all duration-300">
+                        <!-- Thumbnail -->
+                        <div class="w-full sm:w-80 aspect-video relative rounded-lg overflow-hidden flex-shrink-0 bg-black shadow-xl ring-1 ring-white/10">
+                            <img src="{{ .Params.image }}" alt="{{ .Title }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
+                            <!-- Overlay on hover -->
+                            <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300"></div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="flex-1 flex flex-col justify-center py-2">
+                            <div class="flex items-center space-x-3 text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+                                <span class="text-tg-primary bg-tg-primary/10 px-2 py-0.5 rounded">{{ .Params.category | default "News" }}</span>
+                                <span class="w-1 h-1 bg-gray-500 rounded-full"></span>
+                                <span>{{ .Date.Format "Jan 2, 2006" }}</span>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-display font-bold text-white leading-tight mb-4 group-hover:text-tg-primary transition-colors">
+                                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                            </h3>
+                            <p class="text-gray-300 text-sm line-clamp-2 mb-4 leading-relaxed opacity-80 group-hover:opacity-100 tracking-wider  transition-opacity">
+                                {{ .Summary }}
+                            </p>
+                            <div class="flex items-center space-x-2 text-[11px] font-bold text-gray-500">
+                                <div class="flex items-center">
+                                    <div class="w-5 h-5 rounded-full bg-gray-700 mr-2"></div>
+                                    <span class="text-gray-200 text-sm tracking-wide">By Admin Name</span>
+                                </div>
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-2 text-tg-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                            </div>
+                        </div>
+                    </article>
+                    {{ end }}
+                </div>
+
+                <!-- See More Button -->
+                <a href="/latest" class="group relative block w-full mt-10 overflow-hidden rounded-lg bg-black text-white shadow-2xl transition-all hover:scale-[1.01]">
+                    <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                    <div class="relative flex items-center justify-center py-5 font-display font-bold uppercase tracking-widest text-sm">
+                        <span>Load More Articles</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 group-hover:translate-y-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Right Column: Sidebar (Sticky Center) -->
+            <div class="lg:col-span-1 hidden lg:block">
+                 <div class="sticky top-[15vh]">
+                     <!-- Trending Widget -->
+                     <div class="bg-[#1e1e1e] p-8 rounded-xl border border-white/5 shadow-2xl relative overflow-hidden">
+                         <!-- Decorative blur -->
+                         <div class="absolute -top-10 -right-10 w-32 h-32 bg-tg-primary/10 blur-3xl rounded-full pointer-events-none"></div>
+                         
+                         <h3 class="text-white font-display font-black text-xl uppercase mb-8 flex items-center border-b border-white/10 pb-4">
+                             <span class="text-tg-primary mr-3 text-2xl">⚡</span>
+                             Trending Now
+                         </h3>
+                         <div class="space-y-6">
+                             {{ range first 5 (where .Site.RegularPages "Section" "popular") }}
+                             <article class="flex gap-4 group items-center relative">
+                                 <!-- Number Badge -->
+                                 <div class="absolute -left-3 -top-2 text-4xl font-black text-white/5 select-none pointer-events-none group-hover:text-tg-primary/10 transition-colors">
+                                     #
+                                 </div>
+                                 
+                                 <!-- Image (Small) -->
+                                 <div class="w-24 h-16 flex-shrink-0 relative rounded-lg overflow-hidden ring-1 ring-white/10 group-hover:ring-tg-primary/50 transition-all">
+                                     <img src="{{ .Params.image }}" alt="{{ .Title }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                 </div>
+                                 
+                                 <!-- Content -->
+                                 <div class="flex flex-col z-10">
+                                     <div class="text-[10px] font-bold text-tg-primary uppercase mb-1 tracking-wider">
+                                         {{ .Params.category | default "News" }}
+                                     </div>
+                                     <h4 class="text-sm font-bold text-gray-200 group-hover:text-white transition-colors leading-snug line-clamp-2">
+                                         <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                                     </h4>
+                                 </div>
+                             </article>
+                             {{ end }}
+                         </div>
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</section>

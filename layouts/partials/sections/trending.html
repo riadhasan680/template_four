@@ -1,0 +1,59 @@
+<!-- Trending Bar -->
+<div class="bg-black border-b border-gray-800 py-4">
+  <div class="container max-w-7xl mx-auto px-4">
+    <div class="flex items-center overflow-x-auto scrollbar-hide">
+      <!-- Trending Label Removed (User Request) -->
+      
+      <!-- Trending Items (Dynamic) -->
+      <div class="flex items-center justify-center w-full space-x-6">
+        <!-- Static 'Trending' Tab (Active on Home) -->
+        <a href="/" class="flex items-center group flex-shrink-0">
+             <span class="{{ if $.IsHome }}text-tg-primary{{ else }}text-gray-300{{ end }} text-sm font-bold group-hover:text-white transition-colors whitespace-nowrap">
+                Trending
+             </span>
+        </a>
+
+        <!-- Dynamic Tags -->
+        {{ $tags := .Site.Taxonomies.tags.ByCount | first 6 }}
+        {{ range $tags }}
+        <span class="text-gray-500 text-2xl font-light">•</span>
+        <a
+          href="{{ .Page.RelPermalink }}"
+          class="flex items-center group flex-shrink-0"
+        >
+          <span
+            class="text-gray-300 text-lg font-bold group-hover:text-white transition-colors whitespace-nowrap"
+          >
+            {{ .Page.Title }}
+          </span>
+        </a>
+        {{ end }}
+
+        <!-- Fallback if no tags (Show recent post categories or titles) -->
+        {{ if eq (len $tags) 0 }}
+            {{ range first 5 (where .Site.RegularPages "Type" "posts") }}
+            <span class="text-gray-500 text-2xl font-light">•</span>
+            <a href="{{ .RelPermalink }}" class="flex items-center group flex-shrink-0">
+                <span class="text-gray-300 text-lg font-bold group-hover:text-white transition-colors whitespace-nowrap">
+                    {{ .Title }}
+                </span>
+            </a>
+            {{ end }}
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+</style>

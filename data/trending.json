@@ -1,0 +1,37 @@
+[
+  {
+    "title": "ARC Raiders",
+    "url": "/posts/arc-raiders",
+    "icon": "🎮"
+  },
+  {
+    "title": "Where Winds Meet",
+    "url": "/posts/where-winds-meet",
+    "icon": "⚔️"
+  },
+  {
+    "title": "Pokemon Legends: Z-A",
+    "url": "/posts/pokemon-legends-za",
+    "icon": "🔥"
+  },
+  {
+    "title": "Baldur's Gate 3",
+    "url": "/posts/baldurs-gate-3",
+    "icon": "🎲"
+  },
+  {
+    "title": "Events",
+    "url": "/events",
+    "icon": "📅"
+  },
+  {
+    "title": "Release Dates",
+    "url": "/release-dates",
+    "icon": "📆"
+  },
+  {
+    "title": "Reviews",
+    "url": "/reviews",
+    "icon": "⭐"
+  }
+]

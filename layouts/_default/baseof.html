@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="{{ or site.Language.LanguageCode site.Language.Lang }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>
+      {{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title
+      }}{{ end }}
+    </title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Roboto+Condensed:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    {{ $style := resources.Get "css/main.css" | css.PostCSS | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}" />
+  </head>
+  <body class="bg-tg-dark text-tg-text flex flex-col min-h-screen">
+    {{ partial "header.html" . }}
+
+    <main class="flex-grow container mx-auto py-8">
+      {{ block "main" . }}{{ end }}
+    </main>
+
+    {{ partial "footer.html" . }}
+  </body>
+</html>

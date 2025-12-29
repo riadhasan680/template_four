@@ -1,0 +1,31 @@
+baseURL = 'http://example.org/'
+languageCode = 'en-us'
+title = 'The Gamer Clone'
+
+[module]
+  [module.hugoVersion]
+    extended = true
+    min = "0.101.0"
+
+[build]
+  writeStats = true
+
+[[menu.main]]
+  name = 'Guides'
+  url = '/guides'
+  weight = 10
+
+[[menu.main]]
+  name = 'News'
+  url = '/news'
+  weight = 20
+
+[[menu.main]]
+  name = 'Features'
+  url = '/features'
+  weight = 30
+
+[[menu.main]]
+  name = 'Videos'
+  url = '/videos'
+  weight = 40

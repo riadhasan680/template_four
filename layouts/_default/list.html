@@ -1,0 +1,195 @@
+{{ define "main" }}
+<div class="container max-w-7xl mx-auto px-4 py-8">
+  <!-- Page Header -->
+  <header class="mb-12 border-b border-gray-800 pb-8">
+    <div class="flex items-center space-x-4 mb-4">
+      <h1 class="text-4xl md:text-5xl font-display font-black text-white uppercase tracking-tight">
+        {{ .Title }}
+      </h1>
+      <a href="/rss.xml" class="text-tg-primary hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
+        </svg>
+      </a>
+    </div>
+    <p class="text-gray-400 max-w-4xl text-lg leading-relaxed">
+        {{ .Params.description | default "Welcome to our latest coverage. Browse through our collection of articles, reviews, and news." }}
+    </p>
+  </header>
+
+  {{ if eq .Section "videos" }}
+  <!-- Video Grid Layout -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+    {{ range .Pages }}
+    <article class="group bg-[#1a1a1a] rounded-lg overflow-hidden flex flex-col h-full">
+        <!-- Thumbnail -->
+        <div class="relative aspect-video overflow-hidden">
+            <img src="{{ .Params.image }}" alt="{{ .Title }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <!-- Play Icon Overlay -->
+            <div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors">
+                <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center pl-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-black fill-current" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="p-4 flex-1 flex flex-col">
+            <div class="flex items-center space-x-2 text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2">
+                <span class="text-tg-primary">{{ .Params.category | default "Video" }}</span>
+                <span>•</span>
+                <span>{{ .Date.Format "Jan 2, 2006" }}</span>
+            </div>
+            <h3 class="text-lg font-display font-bold text-white leading-tight mb-2 group-hover:text-tg-primary transition-colors">
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </h3>
+        </div>
+    </article>
+    {{ end }}
+  </div>
+  {{ else if eq .Section "exclusives" }}
+  <!-- Exclusives Grid Layout (3 Column) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+    {{ range .Pages }}
+    <article class="relative group rounded-lg overflow-hidden h-[350px]">
+        <!-- Image -->
+        <img src="{{ .Params.image }}" alt="{{ .Title }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+        
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent"></div>
+        
+        <!-- Content -->
+        <div class="absolute bottom-0 left-0 p-6 w-full">
+            <!-- Date -->
+            <div class="text-[10px] font-bold text-gray-400 mb-2 uppercase tracking-wide">
+                {{ .Date.Format "Jan 2, 2006" }}
+            </div>
+            
+            <!-- Title -->
+            <h3 class="text-xl md:text-2xl font-display font-black text-white leading-tight mb-0 group-hover:text-tg-primary transition-colors">
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </h3>
+        </div>
+    </article>
+    {{ end }}
+  </div>
+  {{ else }}
+  <!-- Featured Grid (Top 2) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+    {{ range first 2 .Pages }}
+    <article class="relative group rounded-lg overflow-hidden h-[300px] md:h-[350px]">
+        <img src="{{ .Params.image }}" alt="{{ .Title }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+        
+        <!-- Category Badge (Top Left) -->
+        <div class="absolute top-4 left-4">
+            <span class="bg-tg-primary text-white text-xs font-bold px-2 py-1 uppercase rounded tracking-wider shadow-md">
+                {{ .Params.category | default "Review" }}
+            </span>
+        </div>
+
+        <!-- Content (Bottom) -->
+        <div class="absolute bottom-0 left-0 p-6 w-full">
+            <h2 class="text-2xl md:text-3xl font-display font-bold text-white leading-tight mb-2 group-hover:text-tg-primary transition-colors">
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </h2>
+        </div>
+    </article>
+    {{ end }}
+  </div>
+
+  <!-- Main Content Layout (List + Sidebar) -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+    
+    <!-- Left Column: Article List -->
+    <div class="lg:col-span-2 space-y-8">
+        {{ range after 2 .Pages }}
+        <article class="flex flex-col sm:flex-row gap-6 group border-b border-gray-800 pb-8 last:border-0 hover:bg-[#1a1a1a] transition-colors p-4 rounded-lg -mx-4">
+            <!-- Thumbnail -->
+            <div class="w-full sm:w-64 aspect-video sm:aspect-[16/10] relative rounded-lg overflow-hidden flex-shrink-0 bg-gray-800">
+                <img src="{{ .Params.image }}" alt="{{ .Title }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+
+            <!-- Content -->
+            <div class="flex-1 flex flex-col justify-center">
+                <!-- Meta -->
+                <div class="flex items-center space-x-3 text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-2">
+                    <span class="text-tg-primary">{{ .Params.category | default "Review" }}</span>
+                    <span>/</span>
+                    <span>{{ .Date.Format "Jan 2, 2006" }}</span>
+                </div>
+
+                <!-- Title -->
+                <h3 class="text-xl md:text-2xl font-display font-bold text-white leading-tight mb-3 group-hover:text-tg-primary transition-colors">
+                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                </h3>
+
+                <!-- Excerpt -->
+                <p class="text-gray-400 text-sm leading-relaxed line-clamp-2 mb-3">
+                    {{ .Summary | truncate 120 }}
+                </p>
+
+                <!-- Author & Comments -->
+                <div class="flex items-center justify-between mt-auto">
+                    <div class="flex items-center space-x-1 text-[11px] font-bold text-gray-500">
+                        <span>By</span>
+                        <span class="text-white hover:text-tg-primary transition-colors cursor-pointer">Admin Name</span>
+                    </div>
+                    
+                    <div class="flex items-center space-x-1 text-gray-500 hover:text-white transition-colors cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+                        </svg>
+                        <span class="text-xs font-bold">12</span>
+                    </div>
+                </div>
+            </div>
+        </article>
+        {{ end }}
+
+        <!-- Load More Button -->
+        <div class="pt-8 flex justify-center">
+            <button class="bg-[#262626] hover:bg-tg-primary text-white font-display font-bold uppercase text-sm tracking-wider py-3 px-8 rounded transition-colors w-full md:w-auto">
+                See More
+            </button>
+        </div>
+    </div>
+
+    <!-- Right Column: Sidebar (Newsletter/Ads/Trending) -->
+    <div class="lg:col-span-1 space-y-8">
+        <!-- Newsletter Widget -->
+        <div class="bg-[#1a1a1a] rounded-lg p-6 border border-gray-800">
+            <div class="flex items-center space-x-2 mb-4">
+                <div class="bg-blue-600 p-1.5 rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-display font-bold text-white">TheGamer Digest</h3>
+            </div>
+            <p class="text-xs text-gray-400 mb-4 leading-relaxed">
+                Stay on top of gaming news & reviews with our weekly newsletter.
+            </p>
+            <input type="email" placeholder="Email address" class="w-full bg-black border border-gray-700 rounded px-4 py-2 text-sm text-white mb-3 focus:outline-none focus:border-tg-primary transition-colors">
+            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase text-xs py-2 rounded transition-colors tracking-wide">
+                Subscribe
+            </button>
+        </div>
+
+        <!-- Ad Placeholder -->
+        <div class="bg-[#1a1a1a] rounded-lg h-[600px] flex items-center justify-center border border-gray-800 relative">
+            <span class="text-gray-600 text-xs font-bold uppercase tracking-widest">Advertisement</span>
+             <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                 <div class="w-8 h-8 border-2 border-gray-700 rounded-full"></div>
+             </div>
+        </div>
+    </div>
+
+  </div>
+  {{ end }}
+</div>
+{{ end }}

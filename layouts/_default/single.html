@@ -1,0 +1,221 @@
+{{ define "main" }}
+<div class="container max-w-7xl mx-auto px-4 py-8">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        
+        <!-- Left Column: Article Content -->
+        <article class="lg:col-span-2">
+            
+            <!-- Breadcrumb / Category -->
+            <div class="flex items-center space-x-2 mb-4 text-sm font-bold uppercase tracking-widest">
+                <a href="/" class="text-gray-500 hover:text-white transition-colors">Home</a>
+                <span class="text-gray-700">/</span>
+                <a href="/{{ .Section }}" class="text-tg-primary hover:text-white transition-colors">{{ .Section }}</a>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-black text-white mb-6 leading-tight uppercase">
+                {{ .Title }}
+            </h1>
+
+            <!-- Subtitle/Summary -->
+            {{ with .Summary }}
+            <p class="text-xl text-gray-400 mb-6 leading-relaxed">
+                {{ . }}
+            </p>
+            {{ end }}
+
+            <!-- Author & Meta -->
+            <div class="flex items-center justify-between border-y border-gray-800 py-4 mb-8">
+                <div class="flex items-center space-x-4">
+                    <!-- Author Avatar -->
+                    <div class="w-10 h-10 rounded-full bg-gray-700 overflow-hidden">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin" alt="Author" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-white font-bold uppercase text-xs tracking-wider">By</span>
+                            <a href="#" class="text-tg-primary font-bold uppercase text-xs tracking-wider hover:text-white transition-colors">Admin Name</a>
+                        </div>
+                        <div class="text-gray-500 text-xs mt-0.5">
+                            Published {{ .Date.Format "Jan 2, 2006" }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Share (Visual Only) -->
+                <div class="flex space-x-3">
+                    <button class="w-8 h-8 rounded-full bg-[#1a1a1a] text-gray-400 hover:bg-[#1877f2] hover:text-white flex items-center justify-center transition-colors">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.791-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </button>
+                    <button class="w-8 h-8 rounded-full bg-[#1a1a1a] text-gray-400 hover:bg-[#1da1f2] hover:text-white flex items-center justify-center transition-colors">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.84 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Featured Media (Image or Video) -->
+            <div class="mb-10 relative rounded-xl overflow-hidden shadow-2xl bg-[#1a1a1a]">
+                {{ if .Params.video_url }}
+                    <div class="aspect-video w-full">
+                        <iframe class="w-full h-full" src="{{ replace .Params.video_url "watch?v=" "embed/" }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                {{ else }}
+                    <div class="aspect-video w-full">
+                        <img src="{{ .Params.image }}" alt="{{ .Title }}" class="w-full h-full object-cover">
+                    </div>
+                {{ end }}
+            </div>
+
+            <!-- Content Body -->
+            <div class="prose prose-invert prose-lg max-w-none mb-12 prose-headings:font-display prose-headings:font-bold prose-a:text-tg-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
+                {{ .Content }}
+            </div>
+
+            <!-- Review Score Card (Only if category is Review) -->
+            {{ if eq .Params.category "Review" }}
+            <div class="bg-[#1a1a1a] border border-gray-800 rounded-xl overflow-hidden mb-12">
+                <div class="bg-tg-primary px-6 py-3">
+                    <h3 class="font-display font-black text-white text-xl uppercase">The Verdict</h3>
+                </div>
+                <div class="p-6 md:p-8 flex flex-col md:flex-row gap-8 items-start">
+                    <!-- Score -->
+                    <div class="flex-shrink-0 bg-black rounded-lg w-full md:w-48 aspect-square flex flex-col items-center justify-center border border-gray-800">
+                        <span class="text-6xl font-display font-black text-white mb-2">4.5</span>
+                        <div class="flex space-x-1 mb-2">
+                            <svg class="w-5 h-5 text-tg-primary fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            <svg class="w-5 h-5 text-tg-primary fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            <svg class="w-5 h-5 text-tg-primary fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            <svg class="w-5 h-5 text-tg-primary fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            <svg class="w-5 h-5 text-gray-700 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        </div>
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-widest">Excellent</span>
+                    </div>
+
+                    <!-- Pros/Cons -->
+                    <div class="flex-1 w-full">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-display font-bold text-green-500 uppercase mb-3 text-lg">The Good</h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start text-sm text-gray-300">
+                                        <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                        <span>Stunning visual presentation</span>
+                                    </li>
+                                    <li class="flex items-start text-sm text-gray-300">
+                                        <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                        <span>Deep combat mechanics</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-display font-bold text-red-500 uppercase mb-3 text-lg">The Bad</h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start text-sm text-gray-300">
+                                        <svg class="w-5 h-5 text-red-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                        <span>Occasional frame rate dips</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ end }}
+
+            <!-- Discussion / Comments -->
+            <div class="bg-[#1a1a1a] rounded-xl p-6 md:p-8 mb-12 border border-gray-800">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-display font-black text-white uppercase">Discussion</h3>
+                    <span class="bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full">12 Comments</span>
+                </div>
+                <!-- Fake Comment -->
+                <div class="flex space-x-4 mb-6">
+                    <div class="w-10 h-10 rounded-full bg-gray-700 flex-shrink-0"></div>
+                    <div>
+                        <div class="flex items-center space-x-2 mb-1">
+                            <span class="text-white font-bold text-sm">GamerOne</span>
+                            <span class="text-gray-600 text-xs">2 hours ago</span>
+                        </div>
+                        <p class="text-gray-400 text-sm">This game looks absolutely incredible. Can't wait to play it!</p>
+                    </div>
+                </div>
+                 <!-- Fake Input -->
+                 <div class="relative">
+                    <textarea class="w-full bg-black border border-gray-700 rounded-lg p-4 text-white text-sm focus:outline-none focus:border-tg-primary transition-colors resize-none h-24" placeholder="Join the discussion..."></textarea>
+                    <button class="absolute bottom-3 right-3 bg-tg-primary text-white text-xs font-bold uppercase px-4 py-2 rounded hover:bg-red-700 transition-colors">Post Comment</button>
+                 </div>
+            </div>
+
+            <!-- Read Next / Recommended -->
+            <div>
+                <h3 class="text-2xl font-display font-black text-white uppercase mb-6 border-l-4 border-tg-primary pl-4">Read Next</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {{ $related := where .Site.RegularPages "Section" .Section | shuffle | first 4 }}
+                    {{ range $related }}
+                    <a href="{{ .RelPermalink }}" class="group flex space-x-4 bg-[#1a1a1a] p-3 rounded-lg hover:bg-[#262626] transition-colors">
+                        <div class="w-24 h-24 flex-shrink-0 rounded overflow-hidden relative">
+                            <img src="{{ .Params.image }}" alt="{{ .Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="flex flex-col justify-center">
+                            <!-- Second Font (Rajdhani) with Normal Weight as requested -->
+                            <h4 class="font-display font-normal text-white leading-tight mb-2 group-hover:text-tg-primary transition-colors text-lg">
+                                {{ .Title }}
+                            </h4>
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">{{ .Date.Format "Jan 2, 2006" }}</span>
+                        </div>
+                    </a>
+                    {{ end }}
+                </div>
+            </div>
+
+        </article>
+
+        <!-- Right Column: Sidebar -->
+        <aside class="lg:col-span-1 space-y-8">
+            <!-- Newsletter -->
+            <div class="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800 sticky top-4">
+                <div class="flex items-center space-x-2 mb-4">
+                    <div class="bg-blue-600 p-1.5 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-display font-bold text-white">TheGamer Digest</h3>
+                </div>
+                <p class="text-xs text-gray-400 mb-4 leading-relaxed">
+                    Get the latest gaming news, reviews, and deals sent straight to your inbox.
+                </p>
+                <input type="email" placeholder="Email address" class="w-full bg-black border border-gray-700 rounded px-4 py-2 text-sm text-white mb-3 focus:outline-none focus:border-tg-primary transition-colors">
+                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase text-xs py-2.5 rounded transition-colors tracking-wide">
+                    Subscribe Now
+                </button>
+            </div>
+
+            <!-- Trending / Popular -->
+             <div class="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800">
+                <h3 class="text-lg font-display font-bold text-white mb-4 flex items-center">
+                    <span class="w-1 h-5 bg-tg-primary mr-3 rounded-full"></span>
+                    Trending Now
+                </h3>
+                <div class="space-y-4">
+                    {{ range first 5 (where .Site.RegularPages "Section" "popular") }}
+                    <a href="{{ .RelPermalink }}" class="flex items-start group">
+                        <span class="text-4xl font-display font-black text-gray-800 group-hover:text-tg-primary transition-colors mr-4 -mt-2">#</span>
+                        <h4 class="text-sm font-bold text-gray-300 group-hover:text-white transition-colors leading-snug">
+                            {{ .Title }}
+                        </h4>
+                    </a>
+                    {{ end }}
+                </div>
+            </div>
+
+            <!-- Advertisement -->
+            <div class="bg-[#1a1a1a] rounded-xl h-[400px] flex items-center justify-center border border-gray-800 relative">
+                <span class="text-gray-600 text-xs font-bold uppercase tracking-widest">Advertisement</span>
+            </div>
+        </aside>
+
+    </div>
+</div>
+{{ end }}
